@@ -46,3 +46,58 @@ class Transaction:
        # Adds up the price of every selected FoodItem and stores/returns it.
        self.total_cost = sum(item.price for item in self.selected_items)
        return self.total_cost
+def main():
+   # Small scenario: create and inspect a few sample objects, then
+   # exercise add_item, sorting, filter_by_category, and calculate_total_cost.
+   #Create sample FoodItems
+   burger = FoodItem("Spicy Burger", 6.50, "Mains", 4.7)
+   fries = FoodItem("Fries", 2.50, "Sides", 4.2)
+   soda = FoodItem("Large Soda", 1.75, "Drinks", 3.9)
+   lemonade = FoodItem("Lemonade", 2.25, "Drinks", 4.5)
+   ice_cream = FoodItem("Ice Cream", 3.00, "Desserts", 4.8)
+
+   print("Sample FoodItems:")
+   for item in [burger, fries, soda, lemonade, ice_cream]:
+       print(f"{item.name}: ${item.price} ({item.category}), popularity {item.popularity_rating}")
+
+   #Add items to a Menu
+   menu = Menu()
+   for item in [burger, fries, soda, lemonade, ice_cream]:
+       menu.add_item(item)
+
+   print("\nMenu after adding items:")
+   for item in menu.items:
+       print(item.name)
+
+   # Sort the menu's items
+   # Menu doesn't have its own sort method (not in the spec), so we sort the
+   # plain list of FoodItems directly using Python's built-in sorted().
+   sorted_by_price = sorted(menu.items, key=lambda item: item.price)
+   print("\nMenu sorted by price (low to high):")
+   for item in sorted_by_price:
+       print(f"{item.name}: ${item.price}")
+
+   sorted_by_popularity = sorted(menu.items, key=lambda item: item.popularity_rating, reverse=True)
+   print("\nMenu sorted by popularity (high to low):")
+   for item in sorted_by_popularity:
+       print(f"{item.name}: popularity {item.popularity_rating}")
+
+   #Filter by category
+   drinks = menu.filter_by_category("Drinks")
+   print("\nDrinks only:")
+   for item in drinks:
+       print(item.name)
+
+   #Create a Customer and place an order
+   customer = Customer("Alex")
+   order = Transaction([burger, fries, lemonade])
+   total = order.calculate_total_cost()
+   customer.add_transaction(order)
+
+   print(f"\nOrder total for {customer.name}")
+   print(f"Items: {[item.name for item in order.selected_items]}")
+   print(f"Total cost: ${total}")
+   print(f"Transactions in purchase history: {len(customer.purchase_history)}")
+
+if __name__ == "__main__":
+    main()
