@@ -1,0 +1,27 @@
+classDiagram
+    class Customer {
+        -String name
+        -List~Transaction~ purchaseHistory
+    }
+
+    class FoodItem {
+        -String name
+        -double price
+        -String category
+        -double popularityRating
+    }
+
+    class Menu {
+        -List~FoodItem~ items
+        +filterByCategory(category) List~FoodItem~
+    }
+
+    class Transaction {
+        -List~FoodItem~ selectedItems
+        -double totalCost
+        +calculateTotalCost() double
+    }
+
+    Customer "1" --> "many" Transaction : purchaseHistory
+    Menu "1" o-- "many" FoodItem : contains
+    Transaction "many" --> "many" FoodItem : selectedItems
